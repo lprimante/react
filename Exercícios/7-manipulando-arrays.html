@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Manipulando Eventos</title>
+    <style> 
+        h1, p {
+            font-family: Arial, Helvetica, sans-serif;
+            color: black;
+            font-weight: bold;
+        }
+    </style>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+    const messages = [
+        {
+           id: 'abc123', 
+           title: 'React', 
+           text: 'Nova Mensagem'
+        },
+        {
+            id: 'def123',
+            title: 'Re: React',
+            text: 'Nova Mensagem'
+        },
+        {
+            id: 'ghi123',
+            title: 'Re: Re: React',
+            text: 'Nova Mensagem'
+        }]
+
+    const user = {
+            name: "Luciana"
+        }
+
+    function unreadMessages(messages) {
+        return messages.length
+    }
+
+    function Email(props) {
+        return (
+            <li>
+                <h5>{props.title}</h5>
+                <p>{props.text}</p>              
+            </li>
+        )
+        console.log(props.key, key)                
+    }
+    
+    function Mailbox(props) {        
+        return (  
+            <div> 
+                <h1>Hello {props.user}!</h1>
+                <p>You have {unreadMessages(props.messages)} unread messages!</p>
+                <ul>            
+                    {props.messages.map(messages => (
+                        <Email key={messages.id} title={messages.title} text={messages.text} />
+                    ))}
+                </ul>
+            </div>
+        )
+    }
+
+    ReactDOM.render(
+            <Mailbox messages={messages} key={messages.id} title={messages.title} text={messages.text} user={user.name} />,
+            document.getElementById('root')
+        )
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Manipulando Eventos</title>
+    <style> 
+        h1, p {
+            font-family: Arial, Helvetica, sans-serif;
+            color: black;
+            font-weight: bold;
+        }
+    </style>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+    
+    class FormUser extends React.Component {
+        constructor(props) {
+            super(props)
+            this.state = { 
+                name: "", 
+                email: "",
+                senha: ""
+                }
+            this.handleSubmit = this.handleSubmit.bind(this)
+            this.handleChange = this.handleChange.bind(this)
+        }
+
+        handleSubmit(event) {
+            event.preventDefault()
+            console.log(this.state.name)
+        }
+
+        handleChange(event) {
+            this.setState({name: event.target.value})
+            console.log(this.state.name)
+        }
+
+        render() {
+            return (
+                <form onSubmit={this.handleSubmit}>
+                    <label>
+                        Name: 
+                    <input type="text" name="name" onChange={this.handleChange} />
+                    </label>
+                    <input type="submit" value="Submit" />
+                </form>
+            )
+        }
+    }
+
+    ReactDOM.render(
+            <FormUser />,
+            document.getElementById('root')
+        )
+
+    </script>
+  </body>
+</html>
