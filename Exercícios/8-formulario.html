@@ -4,10 +4,55 @@
     <meta charset="UTF-8" />
     <title>Manipulando Eventos</title>
     <style> 
-        h1, p {
-            font-family: Arial, Helvetica, sans-serif;
-            color: black;
+        * {
+            font-family: Arial, Helvetica, sans-serif
+        }
+        .formulario-titulo {
+            text-align: center;
+        }
+        .formulario-legenda {
             font-weight: bold;
+        }
+        .formulario-campo {
+            display: block;
+            box-sizing: border-box;
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0 0 1rem;
+            border: 1px solid black;
+            border-radius: 5px;
+        }
+
+        .formulario-botao {
+            color: white;
+            font-size: 1.3rem;
+            font-weight: bold;
+            width: 100%;
+            padding: 0.8rem;
+            background: #9351b4;
+            border: 1px solid #9351b4;
+            border-radius: 5px;
+        }
+
+        .erro {
+            color:red;
+        }
+
+        @media(min-width: 768px) {
+            .formulario {
+                max-width: 50%;
+                margin: 3rem auto 0;
+            }
+        }
+        @media(min-width: 992px) {
+            .formulario {
+                max-width: 40%;
+            }
+        }
+        @media(min-width: 1280px) {
+            .formulario {
+                max-width: 30%;
+            }
         }
     </style>
     <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
@@ -24,7 +69,8 @@
             this.state = { 
                 name: "", 
                 email: "",
-                senha: ""
+                senha: "",
+                erro: null
                 }
             this.handleSubmit = this.handleSubmit.bind(this)
             this.handleChange = this.handleChange.bind(this)
@@ -32,22 +78,63 @@
 
         handleSubmit(event) {
             event.preventDefault()
-            console.log(this.state.name)
+            console.log("nome", this.state.name)
+            console.log("email", this.state.email)
+            console.log("senha", this.state.senha)
         }
 
         handleChange(event) {
-            this.setState({name: event.target.value})
-            console.log(this.state.name)
+            const nomeDoInput = event.target.name
+            const valorDoInput = event.target.value
+            
+
+            if(nomeDoInput === "name" && valorDoInput.trim() === "") {
+                //Este campo é obrigatório
+                this.setState({ erro: { tipo: "name", mensagem: "Este campo é obrigatório"}})
+                return
+            }
+
+            if(nomeDoInput === "name" && valorDoInput.length < 10) {
+                this.setState({erro: { tipo: "name", mensagem: "Digite pelo menos 10 caracteres"}})
+                return
+            }
+
+            if(nomeDoInput === "senha" && valorDoInput.trim() === "") {
+                //Este campo é obrigatório
+                this.setState({ erro: { tipo: "senha", mensagem: "Este campo é obrigatório"}})
+                return
+            }
+
+            if(nomeDoInput === "senha" && valorDoInput.length < 6) {
+                this.setState({erro: { tipo: "senha", mensagem: "Digite pelo menos 6 caracteres"}})
+                return
+            }
+
+            this.setState({
+                [nomeDoInput]: valorDoInput,
+                erro: null
+                })
         }
 
         render() {
             return (
-                <form onSubmit={this.handleSubmit}>
-                    <label>
-                        Name: 
-                    <input type="text" name="name" onChange={this.handleChange} />
-                    </label>
-                    <input type="submit" value="Submit" />
+                <form className="formulario" onSubmit={this.handleSubmit}>
+                    <label className="formulario-legenda">Name:</label>
+                    <input className="formulario-campo" type="text" name="name" onChange={this.handleChange} />
+                    {this.state.erro && this.state.erro.tipo === "name" && (
+                        <p className="erro">{this.state.erro.mensagem}</p>
+                    )}
+                    <label className="formulario-legenda">Email:</label>
+                    <input className="formulario-campo" type="text" name="email" onChange={this.handleChange} />
+                    {this.state.erro && this.state.erro.tipo === "email" && (
+                        <p className="erro">{this.state.erro.mensagem}</p>
+                    )}
+                    <label className="formulario-legenda">Senha:</label>
+                    <input className="formulario-campo" type="text" name="senha" onChange={this.handleChange} />
+                    {this.state.erro && this.state.erro.tipo === "senha" && (
+                        <p className="erro">{this.state.erro.mensagem}</p>
+                    )}
+                    <input className="formulario-botao" type="submit" value="Submit" />
                 </form>
             )
         }
