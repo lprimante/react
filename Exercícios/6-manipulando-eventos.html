@@ -2,21 +2,10 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Manipulando Eventos</title>
-    <style> 
-        h1 {
-            font-family: Arial, Helvetica, sans-serif;
-            color: black;
-            font-weight: bold;
-        }
-
-        a {
-            text-decoration: none;
-            border: solid 1px black;
-            border-radius: 5px;
-            color: black;
-            padding: 5px;
-            font-family: Arial, Helvetica, sans-serif;
+    <title>Estado e Ciclo de vida</title>
+    <style>
+        * {
+            font-family: Arial, Helvetica, sans-serif
         }
     </style>
     <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
@@ -27,56 +16,58 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        
-        // function Link() {
-        //     function handleClick(e) {
-        //         e.preventDefault()
-        //         console.log("Fui clicado!")
+        function Link() {
+            function handleClick(e) {
+                e.preventDefault()
+                console.log("O botão foi clicado")
+            }
 
-        //     }
-
-        //     return (
-        //         <a href="#" onClick={handleClick}>
-        //             Click me    
-        //         </a>
-        //     )
-        // }
-        
-        const usuario = {
-            name: "Luciana"
+            return (
+                <a href="#" onClick={handleClick}>
+                    Menu
+                </a>
+            )
         }
+
 
         class Toggle extends React.Component {
             constructor(props) {
                 super(props)
                 this.state = {
-                    isLogUser: true,
-                    }
+                    estaAtivado: true
+                }
+
+                console.log("this no construtor", this)
+
                 this.handleClick = this.handleClick.bind(this)
             }
-            
+
             handleClick(e) {
                 e.preventDefault()
-                console.log(this)
-                this.setState(prevState => ({
-                    isLogUser: !prevState.isLogUser
-                }))
+
+                this.setState(prevState => {
+                    if (prevState.estaAtivado) {
+                        return { estaAtivado: false }
+                    } else {
+                        return { estaAtivado: true }
+                    }
+                })
+                
+                console.log("this no handleClick", this)
             }
 
             render() {
                 return (
-                    <div>
-                        <h1>{this.state.isLogUser ? 'Please, sign up' : 'Welcome, ' + this.props.name}</h1>
-                        <a href="#" onClick={this.handleClick}>
-                            {this.state.isLogUser ? 'Login' : 'Logout'}
-                        </a>
-                    </div>    
+                    <a href="#" onClick={this.handleClick}>
+                        {this.state.estaAtivado ? 'Ativado' : 'Desativado'}
+                    </a>
                 )
             }
-        }
+        }        
+        
 
         ReactDOM.render(
-            <Toggle name={usuario.name}/>,
+            <Toggle />,
             document.getElementById('root')
         );
     </script>

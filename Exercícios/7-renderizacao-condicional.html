@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Estado e Ciclo de vida</title>
+    <style>
+        * {
+            font-family: Arial, Helvetica, sans-serif
+        }
+    </style>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        class PaginaInicial extends React.Component {
+            constructor(props) {
+                super(props)
+
+                this.state = { usuarioLogado: false }
+
+                this.fazerLogout = this.fazerLogout.bind(this)
+                this.fazerLogin = this.fazerLogin.bind(this)
+            }
+
+
+            fazerLogin(e) {
+                e.preventDefault()
+
+                this.setState({ usuarioLogado: true })
+            }
+
+            fazerLogout(e) {
+                e.preventDefault()
+
+                this.setState({ usuarioLogado: false })
+            }
+
+            render() {
+                return this.state.usuarioLogado ? (
+                    <div>
+                        <h1>Bemvinda de volta {this.props.apelido}</h1>
+                        <button onClick={this.fazerLogout}>Sair</button>
+                    </div>
+                ) : (
+                    <div>
+                        <h1>Por favor faça login</h1>
+                        <button onClick={this.fazerLogin}>Entrar</button>
+                    </div>
+                )
+            }
+        }
+
+        ReactDOM.render(
+            <PaginaInicial apelido="Camila" />,
+            document.getElementById('root')
+        );
+    </script>
+  </body>
+</html>
