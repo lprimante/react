@@ -4,10 +4,10 @@ import './Postit.css'
 
 class Postit extends React.Component {
   state = {
-    editando: false,
-    titulo: '',
-    texto: '',
-    id: null
+    editando: this.props.editando || false,
+    titulo: this.props.titulo || '',
+    texto: this.props.texto || '',
+    id: this.props.id || null
   }
 
   handleChange = e => {
@@ -28,7 +28,7 @@ class Postit extends React.Component {
         titulo: this.state.titulo,
         texto: this.state.texto 
       }
-      
+
       // TODO: alterar postit na API
       console.log('editando post-it', postit)
     } else {
