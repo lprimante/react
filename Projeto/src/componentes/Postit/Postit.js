@@ -21,19 +21,30 @@ class Postit extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault()
-    // TODO: Cadastrar postit na API
 
-    const postit = {
-      titulo: this.state.titulo,
-      texto: this.state.texto 
+    if(this.state.id) {
+      const postit = {
+        id: this.state.id,
+        titulo: this.state.titulo,
+        texto: this.state.texto 
+      }
+      
+      // TODO: alterar postit na API
+      console.log('editando post-it', postit)
+    } else {
+      const postit = {
+        titulo: this.state.titulo,
+        texto: this.state.texto 
+      }
+
+      // TODO: cadastrar postit na API
+      console.log('cadastrando post-it', postit)
+
+      this.setState({
+        titulo: '',
+        texto: ''
+      })
     }
-
-    console.log('cadastrando post-it', postit)
-
-    this.setState({
-      titulo: '',
-      texto: ''
-    })
   }
 
   handleClick = e => {
@@ -42,6 +53,10 @@ class Postit extends React.Component {
     const postit = {
       id: this.state.id
     }
+
+    this.setState({
+      editando: false
+    })
 
     console.log('removendo post-it', postit)
   }
@@ -55,10 +70,10 @@ class Postit extends React.Component {
   render () {
     return (
       <form className="postit" onClick={this.handleEditClick} onSubmit={this.handleSubmit}>
-        {this.state.editando && <button type="button" className="postit__botao-remover" onClick={this.handleClick}><Faclose /></button>}
+        {this.state.id && this.state.editando && <button type="button" className="postit__botao-remover" onClick={this.handleClick}><Faclose /></button>}
         <input className="postit__titulo" name="titulo" value={this.state.titulo} area-label="Título" type="text" placeholder="Título..." onChange={this.handleChange}/>
         <textarea className="postit__texto" name="texto" value={this.state.texto} area-label="Texto" placeholder="Digite o texto..." onChange={this.handleChange}/>
-        <button className="postit__botao-concluir" >Concluído</button>
+        {(!this.state.id || this.state.editando) && <button className="postit__botao-concluir" >Concluído</button>}
       </form>
     )
   }
