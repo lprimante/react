@@ -28,17 +28,19 @@ class Postit extends React.Component {
         titulo: this.state.titulo,
         texto: this.state.texto 
       }
+      this.props.onEditPostit(postit)
 
+      this.setState({ editando: false })
       // TODO: alterar postit na API
       console.log('editando post-it', postit)
     } else {
-      const postit = {
+      const newPostit = {
         titulo: this.state.titulo,
-        texto: this.state.texto 
+        texto: this.state.texto        
       }
-
+      this.props.onAddPostit(newPostit)
       // TODO: cadastrar postit na API
-      console.log('cadastrando post-it', postit)
+      console.log('cadastrando post-it', newPostit)
 
       this.setState({
         titulo: '',
@@ -50,15 +52,17 @@ class Postit extends React.Component {
   handleClick = e => {
     e.stopPropagation()
     // TODO: remover postit na API
-    const postit = {
+    const id = {
       id: this.state.id
     }
+
+    this.props.onRemovePostit(id)
 
     this.setState({
       editando: false
     })
 
-    console.log('removendo post-it', postit)
+    console.log('removendo post-it', id)
   }
 
   handleEditClick = e => {

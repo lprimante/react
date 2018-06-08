@@ -3,6 +3,7 @@ import Formulario from '../../componentes/Formulario/Formulario'
 import Grupo from '../../componentes/Formulario/Grupo/Grupo'
 import Botao from '../../componentes/Formulario/Botao/Botao'
 import Link from '../../componentes/Formulario/Link/Link'
+import * as apiLogin from '../../apis/usuarios'
 import './Login.css'
 
 
@@ -34,10 +35,18 @@ class Login extends React.Component {
 
         if (!estaDesabilitado) {
             // TODO: enviar dados para a API
-            console.log("usuario", usuario)
+            apiLogin.postUsuario(usuario)
+            .then(resposta => {
+                const usuarioRespondido = JSON.stringify(resposta.data.usuario)
+                localStorage.setItem('usuario', usuarioRespondido)
+
+                this.props.onEnviarClick()
+                this.props.historico.push('/')
+            })  
             
-            this.props.onEnviarClick()
-            this.props.historico.push('/')
+            .catch(erro => {
+                alert(erro.response.data.erro)
+            })
         }
         
     }

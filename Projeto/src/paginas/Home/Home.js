@@ -27,25 +27,26 @@ class Home extends React.Component {
             },
         ]
 
-        setInterval(() => {
+        setTimeout(() => {
             this.setState({
             postits: postits}
             ), 3000}
         )
     }
 
-    adicionaPostit (postit) {
+    adicionaPostit = (novoPostit) => {
         this.setState(prevState => {
+            novoPostit.id = this.state.postits.length + 1
             return {
                 postits: [
                     ...prevState.postits,
-                    postit
+                    novoPostit
                 ]
             }
         })
     }
 
-    removePostit (id) {
+    removePostit = (id) => {
         this.setState(prevState => {
             return {
                 postits: prevState.postits.filter(
@@ -55,7 +56,7 @@ class Home extends React.Component {
         })
     }
 
-    editaPostit (postitAlterado) {
+    editaPostit = (postitAlterado) => {
         this.setState(prevState => {
             return {
                 postits: prevState.postits.map(
@@ -79,9 +80,9 @@ class Home extends React.Component {
 
         return (
             <div className="home"> 
-                <Postit />
+                <Postit onAddPostit={this.adicionaPostit} onEditPostit={this.editaPostit} onRemovePostit={this.removePostit} />
                 <div className="home__lista">
-                    {this.state.postits.length < 1 ? <p>Carregando...</p> : this.state.postits.map(postit => <Postit key={postit.id} id={postit.id} titulo={postit.titulo} texto={postit.texto} />)}
+                    {this.state.postits.length < 1 ? <p>Carregando...</p> : this.state.postits.map(postit => <Postit key={postit.id} id={postit.id} titulo={postit.titulo} texto={postit.texto} onAddPostit={this.adicionaPostit} onEditPostit={this.editaPostit} onRemovePostit={this.removePostit} />)}
                 </div>
             </div>
         )
