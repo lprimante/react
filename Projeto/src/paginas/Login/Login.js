@@ -3,7 +3,7 @@ import Formulario from '../../componentes/Formulario/Formulario'
 import Grupo from '../../componentes/Formulario/Grupo/Grupo'
 import Botao from '../../componentes/Formulario/Botao/Botao'
 import Link from '../../componentes/Formulario/Link/Link'
-import * as apiLogin from '../../apis/usuarios'
+import actions from '../../redux/actions'
 import './Login.css'
 
 
@@ -34,19 +34,8 @@ class Login extends React.Component {
         const estaDesabilitado = this.estaDesabilitado()
 
         if (!estaDesabilitado) {
-            // TODO: enviar dados para a API
-            apiLogin.postUsuario(usuario)
-            .then(resposta => {
-                const usuarioRespondido = JSON.stringify(resposta.data.usuario)
-                localStorage.setItem('usuario', usuarioRespondido)
-
-                this.props.onEnviarClick()
-                this.props.historico.push('/')
-            })  
+            // aqui chama ou dispara a ação de login
             
-            .catch(erro => {
-                alert(erro.response.data.erro)
-            })
         }
         
     }
