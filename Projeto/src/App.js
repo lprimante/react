@@ -15,7 +15,9 @@ class App extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = { usuario: false }
+    this.state = { 
+      usuario: JSON.parse(localStorage.getItem('usuario'))
+    }
 
     this.logaUsuario = this.logaUsuario.bind(this)
     this.deslogaUsuario = this.deslogaUsuario.bind(this)
@@ -26,6 +28,7 @@ class App extends React.Component {
   }
 
   deslogaUsuario() {
+    localStorage.removeItem('usuario')
     this.setState({ usuario: false })
   }
 

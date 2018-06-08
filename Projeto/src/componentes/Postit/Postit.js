@@ -52,9 +52,8 @@ class Postit extends React.Component {
   handleClick = e => {
     e.stopPropagation()
     // TODO: remover postit na API
-    const id = {
-      id: this.state.id
-    }
+    const id = this.state.id
+    
 
     this.props.onRemovePostit(id)
 

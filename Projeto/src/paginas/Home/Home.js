@@ -1,79 +1,90 @@
 import React from 'react'
 import Postit from '../../componentes/Postit/Postit'
+import * as apiPostits from '../../apis/postit'
 import './Home.css'
 
 class Home extends React.Component {
     state = {
-        postits: []
+        postits: [],
+        carregando: true
     }
 
     componentDidMount () {
         // TODO: buscar lista de postit
-        const postits = [
-            {
-                id: "049f2d25-f1ec-424a-999b-51d2a34aedff.1",
-                titulo: "Estudar",
-                texto: "abc"
-            },
-            {
-                id: "049f2d25-f1ec-424a-999b-51d2a34aedff.2",
-                titulo: "Jogar",
-                texto: "abc"
-            },
-            {
-                id: "049f2d25-f1ec-424a-999b-51d2a34aedff.3",
-                titulo: "Tocar",
-                texto: "abc"
-            },
-        ]
+        apiPostits.getPostiits() 
+            .then(response => {
+                this.setState({
+                    postits: response.data.postits,
+                    carregando: false
+                })
+            })
 
-        setTimeout(() => {
-            this.setState({
-            postits: postits}
-            ), 3000}
-        )
+            .catch(erro => {
+                alert(erro)
+            })
     }
 
     adicionaPostit = (novoPostit) => {
-        this.setState(prevState => {
-            novoPostit.id = this.state.postits.length + 1
-            return {
-                postits: [
-                    ...prevState.postits,
-                    novoPostit
-                ]
-            }
-        })
+        apiPostits.postPostit(novoPostit)
+            .then(response => {
+                this.setState(prevState => {
+                    novoPostit.id = response.data.id
+                    return {
+                        postits: [
+                            ...prevState.postits,
+                            novoPostit
+                        ]
+                    }
+                })
+            })
+
+            .catch(erro => {
+                alert(erro.response.data.erro)
+            })
+        
     }
 
-    removePostit = (id) => {
-        this.setState(prevState => {
-            return {
-                postits: prevState.postits.filter(
-                    postit => postit.id !== id
-                )
-            }
-        })
+    removePostit = (idPostitRemovido) => {
+        console.log(idPostitRemovido)
+        apiPostits.deletePostit(idPostitRemovido)
+           .then(response => {
+                this.setState(prevState => {
+                    return {
+                        postits: prevState.postits.filter(
+                            postit => postit.id !== idPostitRemovido
+                        )
+                    }
+                })
+            })
+
+            .catch(erro => {
+                alert(erro)
+            })
+            
     }
 
     editaPostit = (postitAlterado) => {
-        this.setState(prevState => {
-            return {
-                postits: prevState.postits.map(
-                    postitAtual => {
-                        if(postitAtual.id === postitAlterado.id) {
-                            return {
-                                id: postitAlterado.id,
-                                titulo: postitAlterado.titulo,
-                                texto: postitAlterado.texto
+        apiPostits.putPostit(postitAlterado) 
+            .then(reponse => {
+                this.setState(prevState => {
+                    return {
+                        postits: prevState.postits.map(
+                            postitAtual => {
+                                if(postitAtual.id === postitAlterado.id) {
+                                    return {
+                                        id: postitAlterado.id,
+                                        titulo: postitAlterado.titulo,
+                                        texto: postitAlterado.texto
+                                    }
+                                } else {
+                                    return postitAtual
+                                }
                             }
-                        } else {
-                            return postitAtual
-                        }
+                        )
                     }
-                )
-            }
-        })
+                })
+            })
+        
     }
 
     render() {
